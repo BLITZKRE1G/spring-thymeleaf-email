@@ -28,7 +28,8 @@ public class MailService {
     private TemplateEngine templateEngine;
 
     @Value("${fromEmail}")
-    private String fromEmail;
+    private String fromEmail; //Fetched the value from properties to not having to write every time
+    //Even if the mailId gets changed, we can change the value in the property alone and the rest eill be taken care of
 
     public void sendApprovalMail(ApprovalRequest approvalRequest) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -59,8 +60,11 @@ public class MailService {
                 StandardCharsets.UTF_8.name());
         mimeMessageHelper.setFrom(fromEmail);
         mimeMessageHelper.setSubject(subject);
-        mimeMessageHelper.setText(bodyText);
-
+        mimeMessageHelper.setText(bodyText);//Taking the message body from the User
+        
+        log.info("Sending Approval Mail from: [{}]", fromEmail); //added Logs
+        log.info("Sending Approval Mail to: [{}]", approvalRequest.getMailId());
+        
         mailSender.send(mimeMessage);
     }
 }
