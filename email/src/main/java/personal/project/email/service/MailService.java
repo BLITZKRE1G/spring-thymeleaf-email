@@ -51,4 +51,16 @@ public class MailService {
         log.info("Sending Approval Mail to: [{}]", approvalRequest.getMailId());
         mailSender.send(mimeMessage);
     }
+
+    public void sendBasicEmail(String toEmail, String subject, String bodyText) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,
+                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                StandardCharsets.UTF_8.name());
+        mimeMessageHelper.setFrom(fromEmail);
+        mimeMessageHelper.setSubject(subject);
+        mimeMessageHelper.setText(bodyText);
+
+        mailSender.send(mimeMessage);
+    }
 }
